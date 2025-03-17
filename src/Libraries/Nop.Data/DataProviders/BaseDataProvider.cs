@@ -58,6 +58,28 @@ public abstract partial class BaseDataProvider
     {
         return GetInternalDbConnection(!string.IsNullOrEmpty(connectionString) ? connectionString : GetCurrentConnectionString());
     }
+    
+    /// <summary>
+    /// Gets scalar value from the database
+    /// </summary>
+    /// <param name="sql">The text command to run</param>
+    /// <param name="parameters">Database parameters</param>
+    /// <returns></returns>
+    protected virtual async Task<string> GetSqlStringValueAsync(string sql, params DataParameter[] parameters)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(sql);
+        
+        await using var dbConnection = CreateDbConnection();
+        await using var command = dbConnection.CreateCommand();
+        command.Connection = dbConnection;
+        command.CommandText = sql;
+        command.Parameters.AddRange(parameters);
+        await dbConnection.OpenAsync();
+
+        var value = await command.ExecuteScalarAsync();
+        
+        return value?.ToString() ?? string.Empty;
+    }
 
     /// <summary>
     /// Gets a data hash from database side

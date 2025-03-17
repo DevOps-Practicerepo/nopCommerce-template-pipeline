@@ -767,6 +767,7 @@ public partial class CommonModelFactory : ICommonModelFactory
         model.UtcTime = DateTime.UtcNow;
         model.CurrentUserTime = await _dateTimeHelper.ConvertToUserTimeAsync(DateTime.Now);
         model.HttpHost = _httpContextAccessor.HttpContext.Request.Headers[HeaderNames.Host];
+        model.DatabaseCollation = await _dataProvider.GetDataBaseCollationAsync();
 
         //ensure no exception is thrown
         try
