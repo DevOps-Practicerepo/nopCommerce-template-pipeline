@@ -1,0 +1,23 @@
+---
+  pool: Default
+  
+  trigger: none
+  
+  pr:
+    - develop 
+
+  resources:
+    repositories:
+      - repository: reusablePublicAssets
+        type: github
+        name: VenkeyBoda/AzureDevops_Templates
+        ref: 'refs/heads/main'
+        endpoint: 'github.com_VenkeyBoda'
+      - repository: reusabPrivateAssets
+        type: github
+        name: VenkeyBoda/AzureDevops_Templates
+        ref: 'refs/heads/main'
+        endpoint: 'github.com_VenkeyBoda'        
+  
+  extends:
+    template: DotNetcore/dotnetcore.pipeline.yaml@reusablePublicAssets
